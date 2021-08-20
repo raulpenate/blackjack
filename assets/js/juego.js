@@ -160,6 +160,7 @@ btnPedir.addEventListener('click',(estado) =>{
         mostrarCartaEscondida(); 
         mostarPuntosPartida(false);
         btnPedir.disabled = true;
+        btnDetener.disabled = true;
         // Si pierde tira esta alerta notificando que se perdio la partida
         Swal.fire({ title: 'Perdiste :(',
                     customclass: 'swal-custom',
@@ -167,7 +168,6 @@ btnPedir.addEventListener('click',(estado) =>{
                     background: '#000',
                     imageAlt: 'A tall image'});
     }
-
 });
 
 //Muestra la carta escondida
@@ -239,5 +239,4 @@ btnNuevo.addEventListener('click', () =>{
                                                         btnPedir.disabled = false;
     //Resetamos la variable de ganadorJugador
     ganadorJugador = 'nada';
-    
 });
