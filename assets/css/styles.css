@@ -1,0 +1,66 @@
+/*
+Fonts I gonna use:
+
+font-family: 'Georama', sans-serif;
+font-family: 'Sansita Swashed', cursive;
+ */
+
+html,body{
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #008000;
+  color: #ffff9f;
+  font-family: 'Georama', sans-serif;
+}
+
+h1{
+  font-size: 2em;
+}
+
+.centrado{
+  display:flex;
+  justify-content: center;
+}
+.div-poner-cartas {
+  margin: 0 auto auto 0  !important; 
+  width: 100% !important; 
+}
+
+.titulo {
+  text-align: center;
+  background: #010203;
+  color: #ffff9f;
+  padding: 5px;
+  font-size: 50px;
+  font-family: "Sansita Swashed", cursive;
+}
+
+.carta {
+  position: relative;
+  width: 150px;
+  left: 140px;
+  margin-left: -75px;
+}
+
+@media screen and (max-width: 1024px) {
+  .carta{
+    width: 30%;
+    margin-left: -70px;
+  }
+}
+
+.jugador-cartas {
+  height: 230px;
+}
+
+@media screen and (max-width: 1024px){
+  .jugador-cartas{
+    height: 30%;
+  }
+}
+
+.row{
+  margin: 0 auto auto 0  !important;
+  font-family: 'Georama', sans-serif;
+  justify-content: center;
+}

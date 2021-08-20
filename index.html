@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="shortcut icon" href="assets/img/poker-cards.png" type="image/x-icon">
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Georama&family=Sansita+Swashed:wght@300&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+
+    <header class="titulo">Blackjack</header>
+
+    <!-- OPCIONES DEL JUGADOR -->
+    <div class="row py-2">
+        <div id="divBotones" class="col centrado">
+            <button id="btnNuevo" class="btn btn-danger m-1">Nuevo juego</button>
+            <button id="btnPedir" class="btn btn-warning m-1">Pedir carta</button>
+            <button id="btnDetener" class="btn btn-warning m-1">Detener</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- CARTAS DEL JUGADOR -->
+        <div class="col .col-md-12 .col-sm-12 .col-lg-12">
+            <div class="row flex-container mt-3">
+                <div class="col">
+                    <h1>Jugador - <span>0</span> <small></small></h1>
+                    <div class="jugador-cartas ">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARTAS DE LA COMPUTADORA -->
+        <div class="col .col-md-12 .col-sm-12 .col-lg-12">
+            <div class="row flex-container mt-3">
+                <div class="col">
+                    <h1>Computadora - <span>0</span> <small></small></h1>
+                    <div class="jugador-cartas">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/sweetalert2.all.min.js"></script>
+    <script src="assets/js/underscore-umd-min.js"></script>
+    <script src="assets/js/juego.js"></script>
+</body>
+
+<!-- Icons made by <a href="https://www.freepik.com" 
+    title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" 
+    title="Flaticon">www.flaticon.com</a></> -->
+</html>
