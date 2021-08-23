@@ -1,4 +1,9 @@
-(() => {
+//Dejo este codigo porque simon :u
+//Pero dejo corriendo el codigo minimizado y ofuscado para rapidez
+//Y en un futuro seguridad con otras apps
+//Ya que este es un proyecto educativo gracias al crack Fernando Herrera
+
+const miModulo = (() => {
 
 let deck = [];
 
@@ -99,10 +104,8 @@ const crearDeck = () => {
                         (i == 13) ? 'K' : i ;
 
         //Union de la figura con el palo
-        for (let palo of palos) {
-            deck.push(`${figura}${palo}`);
-        }
-    }
+        palos.forEach(palo => deck.push(`${figura}${palo}`));
+    };
     //Retornamos el deck barajeado
     return _.shuffle(deck);
 };
@@ -261,8 +264,11 @@ btnDetener.addEventListener('click', () =>{
 
 //Crear Juego
 btnNuevo.addEventListener('click', () =>{
-    //Reseteamos puntos del small
     crearJuego();
 });
+
+    return {
+        nuevoJuego: crearJuego
+    };
 
 })();
