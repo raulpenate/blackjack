@@ -1,7 +1,91 @@
+(() => {
+
 let deck = [];
 
-const crearDeck = () => {
+const crearJuego = () => {
+    //Reseteamos todo lo necesario para salvar esta compania :u 
+    reseteandoJuego();
+    //Creacion del deck
+    deck = crearDeck();
+    //Ponemos las cartas
+    ponerCartasAmbosLados();
+    //Bloquea el boton de pedir puntos si este saco puntos >= 21
+    autobloqueoBotonPedir();
+};
 
+const reseteandoJuego = () =>{
+    reseteandoPuntos();
+    reseteandoImagenes();
+    resetLadoyCartaOculta();
+};
+
+const reseteandoImagenes = () => {
+    for (let i = 0; i < 2; i++) {
+        divCartas[i].innerHTML = "";
+        puntosSmall[i].innerHTML = 0;
+    }
+};
+
+const reseteandoPuntos = () => {
+    puntosJugador = 0;
+    puntosComputadora = 0;
+    //Resteamos el HTML de las imagenes de cartas 
+};
+
+const resetLadoyCartaOculta = () => {
+    primerCartaComputadora = true;
+    //Resetamos la variable de ganadorJugador
+    ganadorJugador = 'nada';
+};
+
+const autobloqueoBotonPedir = () => {
+    btnDetener.disabled = false;
+    //Si saca un mano mayor o igual a 21 se autobloquea 
+    const bloquearBotonPedir = (puntosJugador >= 21) ? btnPedir.disabled = true :
+        btnPedir.disabled = false;
+};
+
+const bloquearBtnPedir = (resultado) => {
+    btnPedir.disabled = true;
+};
+
+const bloquearBtnDetener= (resultado) => {
+    btnDetener.disabled = true;
+}
+
+const ponerCartasAmbosLados = () =>{    
+    //Ponemos 2 cartas en cada lado
+    let romper = 0
+    while(true){
+        ponerCarta(0);
+        ponerCarta(1);
+        //Si se pusieron las 2 cartas se rompe el ciclo
+        romper++;
+        if(romper >= 2){
+            break
+        }
+    };
+};
+
+const alertaDeResultado = (resultado, imagen) => {
+    mostrarPuntosPartida(resultado);
+    bloquearBtnDetener();
+    bloquearBtnPedir();
+    //Determina que mensaje tirar
+    let mensaje = '';
+    const mensajeTitulo =   ( resultado == true ) ? mensaje = 'Ganaste :D' :
+                            ( resultado == false ) ? mensaje = 'Perdiste :('  : mensaje = 'Empate :u' ;
+    // Si pierde tira esta alerta notificando lo que paso en la partida 
+    Swal.fire({
+        title: mensaje,
+        imageUrl: imagen,
+        background: '#000',
+        imageAlt: 'A tall image'
+    });
+};
+
+const crearDeck = () => {
+    deck = [];
     //Los palos de los naipes
     const palos = ['S', 'C', 'H', 'D'];
 
@@ -19,12 +103,9 @@ const crearDeck = () => {
             deck.push(`${figura}${palo}`);
         }
     }
-
+    //Retornamos el deck barajeado
+    return _.shuffle(deck);
 };
-
-// Creamos el deck aguevo y lo barajiyamos
-crearDeck();
-deck = _.shuffle(deck);
 
 // Pedir la carta y eliminarla
 const pedirCarta = () => {
@@ -32,15 +113,11 @@ const pedirCarta = () => {
     if(deck.length === 0 ){
         throw 'Ya no hay cartas en el deck carnal';
     }
-
-    const carta = deck.pop();
-
-    return carta;
-}
+    return deck.pop(); 
+};
 
 // Generar el valor de las cartas
 const valorCarta = (carta) => {
-
     //Deja los valores de 0 a length de la carta -1, ignorando el ultimo caracter
     const valor = carta.substring(0, carta.length - 1);
 
@@ -49,15 +126,15 @@ const valorCarta = (carta) => {
     return (isNaN(valor)) ? 
             (valor == 'A') ? 11 : 10
             : valor * 1;
-}
+};
 
 //Referencias
-const btnPedir = document.querySelector('#btnPedir');
-const btnNuevo= document.querySelector('#btnNuevo');
-const btnDetener= document.querySelector('#btnDetener');
-const puntosSmall = document.querySelectorAll('small');
-const puntosSpan = document.querySelectorAll('h1 span');
-const divCartas = document.querySelectorAll('.jugador-cartas');
+const   btnPedir = document.querySelector('#btnPedir'),
+        btnNuevo= document.querySelector('#btnNuevo'),
+        btnDetener= document.querySelector('#btnDetener'),
+        puntosSmall = document.querySelectorAll('small'),
+        puntosSpan = document.querySelectorAll('h1 span'),
+        divCartas = document.querySelectorAll('.jugador-cartas');
 
 //Puntos jugador y computadora y que deje de dar cartas
 let puntosJugador = 0,
@@ -66,7 +143,6 @@ let puntosJugador = 0,
     puntosGaneComputadora = 0,
     puntosLado = 0,
     primerCartaComputadora = true,
-    ganadorJugador = 'nada',
     cartaEscondida = [];
 
 //Juega
@@ -99,9 +175,10 @@ const ponerCarta= (jugador) => {
                         //Se muestra la carta que se hizo pop
                         cartaVista.src = (`assets/cartas/${carta}.png`); 
     
-}
+};
+
 //Actualiza los puntos de la partida
-function mostarPuntosPartida(jugador) {
+const mostrarPuntosPartida = (jugador) => {
     if(jugador){
         puntosGaneJugador++;
         puntosSpan[0].innerHTML = puntosGaneJugador;
@@ -113,64 +190,47 @@ function mostarPuntosPartida(jugador) {
 
 // Verifica si hubo primero ganador, segundo un empate y de ultimo un perderdedor
 const verificarGanador = () => {
-    if (puntosJugador > puntosComputadora || puntosComputadora > 21) {
-        mostarPuntosPartida(true);
-        ganadorJugador = 'ganar';
-        btnPedir.disabled = true;
-        // Si pierde tira esta alerta notificando que se perdio la partida
-        Swal.fire({
-            title: 'Ganaste :D',
-            imageUrl: 'https://media.giphy.com/media/fqtUWqYAqKixIrOXs9/giphy-downsized-large.gif?cid=ecf05e47jljnnq4a4jcb8get0iihm5hcz94jd2bqtp3o9pxm&rid=giphy-downsized-large.gif&ct=g',
-            background: '#000',
-            imageAlt: 'A tall image'
-        });
-    } else if (puntosJugador == puntosComputadora) {
-        ganadorJugador = 'nada';
-        btnPedir.disabled = true;
-        // Si pierde tira esta alerta notificando que se perdio la partida
-        Swal.fire({
-            title: 'Empataste :u',
-            imageUrl: 'https://media.giphy.com/media/BSBrMst3JbwRTP04Ce/giphy.gif?cid=ecf05e47ewcqwbez7dxqifz53udymwta4euux354n8t175tk&rid=giphy.gif&ct=g',
-            background: '#000',
-            imageAlt: 'A tall image'
-        });
-    } else if (puntosJugador >= 21 || puntosJugador < puntosComputadora) {        
-        mostarPuntosPartida(false);
-        ganadorJugador = 'perder';
-        btnPedir.disabled = true;
-        // Si pierde tira esta alerta notificando que se perdio la partida
-        Swal.fire({
-            title: 'Perdiste :(',
-            imageUrl: 'https://media.giphy.com/media/TGMBfijgHh5FzsR1fT/giphy.gif?cid=ecf05e47wir9wp7201yq9b80g4ncg0zqepi4d47u8c74psqv&rid=giphy.gif&ct=g',
-            background: '#000',
-            imageAlt: 'A tall image'
-        });
+    //Si puntosjugador > 21 o puntos jugador < puntoscomputadora
+    if (puntosJugador > 21) {      
+        alertaDeResultado(false,'https://media.giphy.com/media/TGMBfijgHh5FzsR1fT/giphy.gif?cid=ecf05e47wir9wp7201yq9b80g4ncg0zqepi4d47u8c74psqv&rid=giphy.gif&ct=g');
     }
+    //SI puntos del jugador mayores al de la computadora o computadora mayor a 21
+    else if (puntosComputadora > 21) {
+        alertaDeResultado(true,'https://media.giphy.com/media/fqtUWqYAqKixIrOXs9/giphy-downsized-large.gif?cid=ecf05e47jljnnq4a4jcb8get0iihm5hcz94jd2bqtp3o9pxm&rid=giphy-downsized-large.gif&ct=g');
+    }
+    else if (puntosJugador > puntosComputadora) {      
+        alertaDeResultado(true,'https://media.giphy.com/media/TGMBfijgHh5FzsR1fT/giphy.gif?cid=ecf05e47wir9wp7201yq9b80g4ncg0zqepi4d47u8c74psqv&rid=giphy.gif&ct=g');
+    }
+    else if (puntosJugador < puntosComputadora) {
+        alertaDeResultado(false,'https://media.giphy.com/media/TGMBfijgHh5FzsR1fT/giphy.gif?cid=ecf05e47wir9wp7201yq9b80g4ncg0zqepi4d47u8c74psqv&rid=giphy.gif&ct=g');
+    } 
+    // Si puntos jugador iguales a puntos computadora
+    else if (puntosJugador == puntosComputadora) {
+        alertaDeResultado(null,'https://media.giphy.com/media/BSBrMst3JbwRTP04Ce/giphy.gif?cid=ecf05e47ewcqwbez7dxqifz53udymwta4euux354n8t175tk&rid=giphy.gif&ct=g');
+    } 
+};
 
-
+const turnoJugador = () => {
+    if( puntosJugador < 21 ){
+        ponerCarta(0);
+        if( puntosJugador > 21 ){
+            mostrarCartaEscondida();
+            verificarGanador();
+        }else if( puntosJugador == 21 ){
+            bloquearBtnPedir();
+        };
+    }else{
+        mostrarCartaEscondida();
+        verificarGanador();
+    };
 };
 
 //Eventos
 //Pide cartas aleatorias mientras queria seguir o no se pase o sea igual de 21 
 btnPedir.addEventListener('click',(estado) =>{
-    ponerCarta(0)
-    if(puntosJugador == 21){
-        btnPedir.disabled = true;
-    }else if(puntosJugador >= 21){
-        mostrarCartaEscondida(); 
-        mostarPuntosPartida(false);
-        btnPedir.disabled = true;
-        btnDetener.disabled = true;
-        // Si pierde tira esta alerta notificando que se perdio la partida
-        Swal.fire({ title: 'Perdiste :(',
-                    customclass: 'swal-custom',
-                    imageUrl: 'https://media.giphy.com/media/TGMBfijgHh5FzsR1fT/giphy.gif?cid=ecf05e47wir9wp7201yq9b80g4ncg0zqepi4d47u8c74psqv&rid=giphy.gif&ct=g',
-                    background: '#000',
-                    imageAlt: 'A tall image'});
-    }
+    turnoJugador();
 });
 
-//Muestra la carta escondida
 const mostrarCartaEscondida = () => {
     const cartaEscondidaVista = document.querySelector('.carta-escondida');
     //cartaEscondida[0] = la imagen de la carta
@@ -181,62 +241,28 @@ const mostrarCartaEscondida = () => {
     puntosSmall[1].innerText = `- ${puntosComputadora}`;
 };
 
-//Cuando se detiene la computadora pide cartas mientras no se pase de 21
-btnDetener.addEventListener('click', () =>{
-    //Muestra la carta escondida
-    mostrarCartaEscondida(); 
-    //DA cartas si los puntos ocmputadora son menos que el jugador y si los de la maquina son menores a 21
-    while((puntosComputadora < puntosJugador) && (puntosComputadora < 21)){
+const turnoComputadora = () => {
+    mostrarCartaEscondida();
+    //DA cartas si los puntos compu son menos que el jugador y si los de la maquina son menores a 21
+    while ((puntosComputadora < puntosJugador) && puntosComputadora < 21) {
         ponerCarta(1);
     };
-    // Verificamos si gano la maquina o el humano, y desahabilitamos el boton detener
+    // Verificamos si gano la maquina o el humano, y desahabilitamos los botones 
     verificarGanador();
-    btnDetener.disabled = true;
+    // Bloquea ambos botones
+    bloquearBtnPedir();
+    bloquearBtnDetener();
+};
+
+//Cuando se detiene la computadora pide cartas mientras no se pase de 21
+btnDetener.addEventListener('click', () =>{
+    turnoComputadora();
 });
 
 //Crear Juego
 btnNuevo.addEventListener('click', () =>{
     //Reseteamos puntos del small
-    puntosJugador = 0;
-    puntosComputadora = 0;
-    
-    //Resteamos el HTML de las imagenes de cartas 
-    for(let i = 0; i < 2; i++){
-        divCartas[i].innerHTML = "";
-        puntosSmall[i].innerHTML = 0;
-    }   
-    //Resteamos el array, lo re-creamos y barajeamos
-    deck = []
-    crearDeck();
-    deck = _.shuffle(deck);
-
-    //Reseteamos la variable que oculta carta
-    primerCartaComputadora = true;
-
-    // // Deberia retarasar que se llame la funcion para poner las cartas
-    // // Pero naa :(
-    // // const delayPonerCarta = () =>{
-    //     // setTimeout(function(){ponerCarta(0);ponerCarta(1)},95);
-    // // };
-
-    //Ponemos 2 cartas en cada lado
-    let romper = 0
-    while(true){
-        //manda a llamar poner las cartas y les hace delay para que tarde un poco en aparecer
-        // // al menos deberia pero naa
-        // // delayPonerCarta()
-        ponerCarta(0);
-        ponerCarta(1);
-        //Si se pusieron las 2 cartas se rompe el ciclo
-        romper++;
-        if(romper >= 2){
-            break
-        }
-    }
-    //Bloquea el boton de pedir puntos si este saco puntos >= 21
-    btnDetener.disabled = false;
-    const bloquearBotonPedir =  (puntosJugador >= 21) ? btnPedir.disabled = true : 
-                                                        btnPedir.disabled = false;
-    //Resetamos la variable de ganadorJugador
-    ganadorJugador = 'nada';
+    crearJuego();
 });
+
+})();
